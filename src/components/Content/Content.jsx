@@ -4,13 +4,14 @@ import Profile from "./Profile/Profile";
 import Dialogs from "./Dialogs/Dialogs";
 import UsersContainer from "./Users/UsersContainer";
 import s from './Content.module.css';
+import ProfileContainer from "./Profile/ProfileContainer";
 
 const Content = () => {
     return (
         <div className={s.content}>zxcontent
             <Route
                 path="/profile"
-                render={() => <Profile/>}
+                render={() => <ProfileContainer/>}
             />
 
             <Route

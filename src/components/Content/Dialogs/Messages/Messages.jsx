@@ -7,25 +7,17 @@ let Msg = (props) => {
 }
 
 let Messages = (props) => {
-    let addMessage = () => {
-        props.addMessage()
-    }
-
-    let onChange = (e) => {
-        let text = e.target.value;
-        props.onChange(text)
-    }
 
     return (
         <div>
             {props.messages.map(
-                e => <Msg text={e.text}/>
+                e => <Msg key={e.id} text={e.text}/>
             )}
             <textarea
-                onChange={onChange}
-                value={props.newMessageText}
+                onChange={props.changeMessage}
+                value={props.textOfNewMessage}
             />
-            <button onClick={addMessage}>Add msg</button>
+            <button onClick={props.addMessage}>Add msg</button>
         </div>
     );
 }
