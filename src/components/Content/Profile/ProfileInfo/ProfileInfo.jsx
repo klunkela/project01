@@ -9,7 +9,7 @@ const ProfileInfo = (props) => {
     return (
         <div>
             <img src={props.profile ? props.profile.photos.small : null}/>
-            <div>= ava + descr</div>
+            <div>= ava + description</div>
         </div>
     )
 }
