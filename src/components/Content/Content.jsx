@@ -10,7 +10,7 @@ const Content = () => {
     return (
         <div className={s.content}>zxcontent
             <Route
-                path="/profile"
+                path="/profile/:userId?"
                 render={() => <ProfileContainer/>}
             />
 

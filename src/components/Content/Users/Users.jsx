@@ -4,6 +4,7 @@ import styles from './Users.module.css';
 import s from './Users.module.css';
 import Preloader from "../../Preloader/Preloader";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsers / props.onOnePage);
@@ -13,6 +14,9 @@ let Users = (props) => {
         pages.push(i)
     }
 
+    props.users.map( e => {
+        console.log(e)
+    });
     return <div>
         <div>
             {props.isFetching ? <Preloader/> : null}
@@ -24,25 +28,49 @@ let Users = (props) => {
                          }}>{p}</span>
         })}
         {props.users.map(
-            e => <div key={e.id} >
-                <NavLink to={'/profile/'+e.id}>
+            e => <div key={e.id}>
+                <NavLink to={'/profile/' + e.id}>
                     <img src={e.photos.small != null ? e.photos.small : userPhoto} className={s.zxc}/>
                 </NavLink>
                 <div>{e.name}</div>
                 <div>{"e.place.country"}</div>
                 <div>{"e.place.city"}</div>
                 <div>
-                    {e.isFollowed
+                    {e.followed
                         ?
                         <button onClick={() => {
-                            props.unfollow(e.id)
+                            axios.delete('https://social-network.samuraijs.com/api/1.0/follow/' + e.id, {
+                                withCredentials: true,
+                                headers: {
+                                    "API-KEY": "64f124db-ddcd-49c1-b4eb-dc25717092dd"
+                                }
+                            })
+                                .then(response => {
+                                    if (response.data.resultCode === 0) {
+                                        console.log(2131245)
+                                        props.unfollow(e.id)
+                                    }
+                                });
+
                         }}>
                             unfollow
                         </button>
 
                         :
                         <button onClick={() => {
-                            props.follow(e.id)
+                            axios.post('https://social-network.samuraijs.com/api/1.0/follow/' + e.id, {},{
+                                withCredentials: true,
+                                headers: {
+                                    "API-KEY": "64f124db-ddcd-49c1-b4eb-dc25717092dd"
+                                }
+                            })
+                                .then(response => {
+                                    if (response.data.resultCode === 0) {
+                                        console.log(121212)
+                                        props.follow(e.id)
+                                    }
+                                });
+
                         }}>
                             follow
                         </button>
