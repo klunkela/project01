@@ -1,21 +1,26 @@
 import React from 'react';
 import {connect} from "react-redux";
 import Users from "./Users";
-import {follow, setUsers, unfollow, setCurrentPage, setTotalUsers, setIsFetching} from "../../../redux/users_reducer";
+import {
+    follow,
+    setUsers,
+    unfollow,
+    setCurrentPage,
+    setTotalUsers,
+    setIsFetching,
+    setIsFollowingInProgress
+} from "../../../redux/users_reducer";
 import axios from "axios";
+import {getUsers} from "../../../api/api";
 
 class UsersContainer extends React.Component {
     componentDidMount() {
         this.props.setIsFetching(true)
-        axios.get('https://social-network.samuraijs.com/api/1.0/users?page=' + this.props.currentPage + '&count=' + this.props.onOnePage, {
-            withCredentials: true
-        })
-            .then(response => {
-                this.props.setUsers(response.data.items);
-                this.props.setTotalUsers(response.data.totalCount);
-                this.props.setCurrentPage(1);
-                this.props.setIsFetching(false)
-            });
+        getUsers(this.props.currentPage, this.props.onOnePage).then(data => {
+            this.props.setUsers(data.items);
+            this.props.setTotalUsers(data.totalCount);
+            this.props.setIsFetching(false)
+        });
     }
 
     onPageChanged = (p) => {
@@ -40,6 +45,8 @@ class UsersContainer extends React.Component {
             unfollow={this.props.unfollow}
             follow={this.props.follow}
             isFetching={this.props.isFetching}
+            setIsFollowingInProgress={this.props.setIsFollowingInProgress}
+            isFollowingInProgress={this.props.isFollowingInProgress}
         />
     }
 }
@@ -50,33 +57,10 @@ const MapStateToProps = (state) => {
         totalUsers: state.usersPage.totalUsers,
         onOnePage: state.usersPage.onOnePage,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        isFollowingInProgress: state.usersPage.isFollowingInProgress
     }
 }
-/*
-const MapDispatchToProps = (dispatch) => {
-    return {
-        follow: (id) => {
-            dispatch(followAC(id))
-        },
-        unfollow: (id) => {
-            dispatch(unfollowAC(id))
-        },
-        setUsers: (users) => {
-            dispatch(setUsersAC(users))
-        },
-        setCurrentPage: (currentPage) => {
-            dispatch(setCurrentPageAC(currentPage))
-        },
-        setTotalUsers: (totalUsers) => {
-            dispatch(setTotalUsersAC(totalUsers))
-        },
-        setIsFetching: (isFetching) => {
-            dispatch(setIsFetchingAC(isFetching))
-        }
-    }
-}
-*/
 
 export default connect(MapStateToProps, {
         follow,
@@ -84,6 +68,7 @@ export default connect(MapStateToProps, {
         setUsers,
         setCurrentPage,
         setTotalUsers,
-        setIsFetching
+        setIsFetching,
+        setIsFollowingInProgress
     }
 )(UsersContainer);

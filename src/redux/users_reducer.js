@@ -4,13 +4,14 @@ const SET_USERS = "SET_USERS"
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
 const SET_TOTAL_USERS = "SET_TOTAL_USERS"
 const SET_IS_FETCHING = "SET_IS_FETCHING"
-
+const SET_IS_FOLLOWING_IN_PROGRESS = "SET_IS_FOLLOWING_IN_PROGRESS"
 let initialState = {
     users: [],
     totalUsers: 0,
     onOnePage: 5,
     currentPage: 1,
-    isFetching: true
+    isFetching: true,
+    isFollowingInProgress: []
 }
 
 const users_reducer = (state = initialState, action) => {
@@ -52,7 +53,7 @@ const users_reducer = (state = initialState, action) => {
             }
         }
         case SET_TOTAL_USERS: {
-            if (action.totalUsers>100) return {
+            if (action.totalUsers > 100) return {
                 ...state, totalUsers: 100
             }
             return {
@@ -64,6 +65,15 @@ const users_reducer = (state = initialState, action) => {
                 ...state, isFetching: action.isFetching
             }
         }
+        case SET_IS_FOLLOWING_IN_PROGRESS: {
+            return {
+                ...state,
+                isFollowingInProgress: action.isFollowingInProgress
+                    ? [...state.isFollowingInProgress, action.id]
+                    : state.isFollowingInProgress.filter(id => id != action.id)
+
+            }
+        }
         default: {
             return state;
         }
@@ -71,22 +81,25 @@ const users_reducer = (state = initialState, action) => {
 }
 
 export let follow = (id) => {
-    return {type: FOLLOW, id: id}
+    return {type: FOLLOW, id}
 }
 export let unfollow = (id) => {
-    return {type: UNFOLLOW, id: id}
+    return {type: UNFOLLOW, id}
 }
 export let setUsers = (users) => {
-    return {type: SET_USERS, users: users}
+    return {type: SET_USERS, users}
 }
 export let setCurrentPage = (currentPage) => {
-    return {type: SET_CURRENT_PAGE, currentPage: currentPage}
+    return {type: SET_CURRENT_PAGE, currentPage}
 }
 export let setTotalUsers = (totalUsers) => {
-    return {type: SET_TOTAL_USERS, totalUsers: totalUsers}
+    return {type: SET_TOTAL_USERS, totalUsers}
 }
 export let setIsFetching = (isFetching) => {
-    return {type: SET_IS_FETCHING, isFetching: isFetching}
+    return {type: SET_IS_FETCHING, isFetching}
+}
+export let setIsFollowingInProgress = (isFollowingInProgress, id) => {
+    return {type: SET_IS_FOLLOWING_IN_PROGRESS, isFollowingInProgress, id}
 }
 
 export default users_reducer
