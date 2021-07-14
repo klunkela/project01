@@ -5,6 +5,7 @@ import s from './Users.module.css';
 import Preloader from "../../Preloader/Preloader";
 import {NavLink} from "react-router-dom";
 import axios from "axios";
+import {usersAPI} from "../../../api/api";
 
 let Users = (props) => {
     let pagesCount = Math.ceil(props.totalUsers / props.onOnePage);
@@ -14,7 +15,7 @@ let Users = (props) => {
         pages.push(i)
     }
 
-    props.users.map( e => {
+    props.users.map(e => {
         console.log(e)
     });
     return <div>
@@ -38,43 +39,15 @@ let Users = (props) => {
                 <div>
                     {e.followed
                         ?
-                        <button disabled={props.isFollowingInProgress.some(id => id===e.id)} onClick={() => {
-                            props.setIsFollowingInProgress(true, e.id)
-                            axios.delete('https://social-network.samuraijs.com/api/1.0/follow/' + e.id, {
-                                withCredentials: true,
-                                headers: {
-                                    "API-KEY": "082e0500-bc8e-4f04-bb83-bc60d207e620"
-                                }
-                            })
-                                .then(response => {
-                                    if (response.data.resultCode === 0) {
-                                        props.unfollow(e.id)
-                                    }
-                                    props.setIsFollowingInProgress(false, e.id)
-
-                                });
-
+                        <button disabled={props.isFollowingInProgress.some(id => id === e.id)} onClick={() => {
+                            props.unfollow(e.id)
                         }}>
                             unfollow
                         </button>
 
                         :
-                        <button disabled={props.isFollowingInProgress.some(id => id===e.id)} onClick={() => {
-                            props.setIsFollowingInProgress(true, e.id)
-                            axios.post('https://social-network.samuraijs.com/api/1.0/follow/' + e.id, {},{
-                                withCredentials: true,
-                                headers: {
-                                    "API-KEY": "082e0500-bc8e-4f04-bb83-bc60d207e620"
-                                }
-                            })
-                                .then(response => {
-                                    if (response.data.resultCode === 0) {
-                                        props.follow(e.id)
-                                    }
-                                    props.setIsFollowingInProgress(false, e.id)
-
-                                });
-
+                        <button disabled={props.isFollowingInProgress.some(id => id === e.id)} onClick={() => {
+                            props.follow(e.id)
                         }}>
                             follow
                         </button>
