@@ -1,10 +1,10 @@
 import React from "react";
 import {Route} from "react-router-dom";
-import Profile from "./Profile/Profile";
 import Dialogs from "./Dialogs/Dialogs";
 import UsersContainer from "./Users/UsersContainer";
 import s from './Content.module.css';
 import ProfileContainer from "./Profile/ProfileContainer";
+import Login from "./Login/Login";
 
 const Content = () => {
     return (
@@ -22,6 +22,10 @@ const Content = () => {
             <Route
                 path="/users"
                 render={() => <UsersContainer/>}
+            />
+            <Route
+                path="/login"
+                render={() => <Login/>}
             />
 
 

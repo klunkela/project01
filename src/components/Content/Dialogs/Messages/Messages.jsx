@@ -7,7 +7,6 @@ let Msg = (props) => {
 }
 
 let Messages = (props) => {
-
     return (
         <div>
             {props.messages.map(
