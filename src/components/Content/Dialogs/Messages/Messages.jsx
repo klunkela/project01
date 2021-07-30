@@ -12,6 +12,13 @@ let Messages = (props) => {
             {props.messages.map(
                 e => <Msg key={e.id} text={e.text}/>
             )}
+            <MessagesForm/>
+        </div>
+    );
+}
+let MessagesForm = (props) => {
+    return (
+        <div>
             <textarea
                 onChange={props.changeMessage}
                 value={props.textOfNewMessage}
