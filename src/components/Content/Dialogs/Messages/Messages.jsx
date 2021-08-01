@@ -1,4 +1,5 @@
 import React from "react";
+import {Field, Form, Formik} from "formik";
 
 let Msg = (props) => {
     return (
@@ -12,18 +13,28 @@ let Messages = (props) => {
             {props.messages.map(
                 e => <Msg key={e.id} text={e.text}/>
             )}
-            <MessagesForm/>
+            <MessagesForm addMessage={props.addMessage}/>
         </div>
     );
 }
 let MessagesForm = (props) => {
     return (
         <div>
-            <textarea
-                onChange={props.changeMessage}
-                value={props.textOfNewMessage}
-            />
-            <button onClick={props.addMessage}>Add msg</button>
+            <Formik
+                initialValues={{
+                    message: '',
+                }}
+                onSubmit={
+                    async (values) => {
+                        await new Promise((r) => setTimeout(r, 500));
+                        props.addMessage(values.message);
+                    }}
+            >
+                <Form>
+                    <Field id="message" name="message" placeholder="" />
+                    <button type="submit">Submit</button>
+                </Form>
+            </Formik>
         </div>
     );
 }

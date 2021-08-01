@@ -1,5 +1,4 @@
 const ADD_MESSAGE = 'ADD_MESSAGE'
-const CHANGE_NEW_MESSAGE_TEXT = 'CHANGE_NEW_MESSAGE_TEXT'
 
 let initialState = {
     usernames: [
@@ -17,26 +16,14 @@ let initialState = {
         {id: "4", text: "msg a me4"},
         {id: "5", text: "msg"},
         {id: "6", text: "name6"}
-    ],
-    textOfNewMessage: 'zxzzc'
+    ]
 }
 const dialogs_reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_MESSAGE: {
-            let newMessage = {
-                id: "4",
-                text: state.textOfNewMessage
-            }
             return {
                 ...state,
-                messages: [...state.messages, newMessage],
-                textOfNewMessage: ''
-            }
-        }
-        case CHANGE_NEW_MESSAGE_TEXT: {
-            return {
-                ...state,
-                textOfNewMessage: [state.textOfNewMessage + action.textOfNewMessage]
+                messages: [...state.messages, {id: "4", text: action.message}]
             }
         }
         default: {
@@ -45,15 +32,8 @@ const dialogs_reducer = (state = initialState, action) => {
     }
 }
 
-export let addMessage = () => {
-    return {type: ADD_MESSAGE}
-}
-
-export let changeMessage = (textOfNewMessage) => {
-    return {
-        type: CHANGE_NEW_MESSAGE_TEXT,
-        textOfNewMessage: textOfNewMessage.nativeEvent.data
-    }
+export let addMessage = (message) => {
+    return {type: ADD_MESSAGE, message}
 }
 
 export default dialogs_reducer
